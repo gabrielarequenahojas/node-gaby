@@ -1,6 +1,6 @@
 
 {
-  "name": "taller nodejs on heroku",
+  "name": "tallerTres_expresshandlebars",
   "version": "1.0.0",
   "description": "crud classes with nodejs express hbs postgresql knex",
   "engines": {
@@ -12,7 +12,7 @@
     "test": "node test.js"
   },
   "dependencies": {
-    "express-handlebars": "^3.0.0"
+    "express-handlebars": "^3.0.0",
     "express": "^4.15.2"
   },
   "devDependencies": {
