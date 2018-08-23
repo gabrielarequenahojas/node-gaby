@@ -20,4 +20,14 @@ app.listen(app.get('port'), function(){
 });
 */
 
+//ponerle .js o no igual funciona
+var fortune = require('./lib/fortune.js');
+
+app.get('/about', function (req,res) {
+	res.render('about', { fortune: fortune.getFortune()});
+});
+
+
+app.use(express.static(path.join(__dirname,'/public')));
+
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
