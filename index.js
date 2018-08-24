@@ -4,19 +4,20 @@ const path = require('path');
 const PORT = process.env.PORT || 5000;
 
 var exphbs  = require('express-handlebars');
-
+const knex = require('./db/knex');
 var app = express();
+
+//body parser
+var bodyParser = require('body-parser');
+var fortune = require('./lib/fortune.js');
+
+
 
 app.engine('handlebars', exphbs({defaultLayout: 'main'}));
 app.set('view engine', 'handlebars');
 
-app.get('/', (req, res) => res.render('home'));
 
-//login route
-app.get('/login', (req, res) => res.render('login', {csrf:'abc'}));
 
-//body parser
-var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({extended : true}));
 
 app.post('/process', function (req, res){
@@ -36,13 +37,28 @@ app.listen(app.get('port'), function(){
 */
 
 //ponerle .js o no igual funciona
-var fortune = require('./lib/fortune.js');
 
-app.get('/about', function (req,res) {
-	res.render('about', { fortune: fortune.getFortune()});
-});
+
 
 
 app.use(express.static(path.join(__dirname,'/public')));
+
+
+var router = require("./router/index.js");
+//var users = require(".routers/user.js");
+
+app.use("/", router);
+//app.use("/user", index);
+
+app.get ("/user", function(req, res){
+
+	//una forma de un query en knex
+	knex("usuarios")
+	.select()
+	//obligatorio escribir el then
+	.then( objCollectUsers => {
+		res.render("user/index", {objUsers:objCollectUsers});
+	});
+});
 
 app.listen(PORT, () => console.log(`Listening on ${ PORT }`));
